@@ -1,0 +1,93 @@
+<div class="flex h-screen bg-gray-50 dark:bg-base-100 text-gray-800 dark:text-gray-300 font-sans">
+  <!-- Sidebar -->
+  <aside class="w-20 md:w-64 bg-white dark:bg-base-200 text-gray-600 dark:text-gray-300 flex flex-col transition-all duration-300">
+    <div class="h-20 flex items-center justify-center border-b border-gray-200 dark:border-gray-700">
+      <h1 class="text-xl font-bold text-gray-900 dark:text-white hidden md:block">EmployeeHub</h1>
+      <span class="text-3xl font-bold md:hidden text-gray-900 dark:text-white">EH</span>
+    </div>
+    <nav class="flex-1 px-2 md:px-4 py-4 space-y-2">
+      @for (view of ['dashboard', 'employees', 'projects', 'rewards']; track view) {
+        <button (click)="changeView(view)" 
+          [class]="'w-full flex items-center p-3 rounded-lg transition-colors ' + (activeView() === view ? 'bg-primary text-white' : 'hover:bg-gray-100 dark:hover:bg-base-300 text-gray-800 dark:text-white')">
+          <span [innerHTML]="getIcon(view)"></span>
+          <span class="ml-4 font-semibold hidden md:block">{{ view.charAt(0).toUpperCase() + view.slice(1) }}</span>
+        </button>
+      }
+    </nav>
+    <div class="p-4 border-t border-gray-200 dark:border-gray-700">
+      @if (currentUser(); as user) {
+        <button (click)="changeView('profile')" class="w-full flex items-center p-2 rounded-lg transition-colors" [class]="activeView() === 'profile' ? 'bg-gray-200 dark:bg-base-300' : 'hover:bg-gray-100 dark:hover:bg-base-300'">
+            <img [src]="user.avatarUrl" alt="User Avatar" class="w-10 h-10 rounded-full">
+            <div class="ml-3 hidden md:block text-left">
+                <p class="font-semibold text-sm text-gray-900 dark:text-white">{{ user.name }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">{{ user.role }}</p>
+            </div>
+        </button>
+      }
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <header class="h-20 bg-white dark:bg-base-200 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-6">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white capitalize">{{ activeView() }}</h2>
+       @if (currentUser(); as user) {
+        <div class="flex items-center space-x-4">
+          <div class="text-right">
+             <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Kudos to Give</p>
+             <p class="text-lg font-bold text-accent transition-transform flex items-center justify-end" [class]="kudosBalanceUpdated() ? 'animate-text-pop text-success' : ''">
+              {{ user.kudosBalance }} 
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm6 6a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1H9a1 1 0 110-2h1v-1a1 1 0 011-1zM5 12a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM15 2a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0V6h-1a1 1 0 110-2h1V3a1 1 0 011-1zM15 8a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+             </p>
+          </div>
+           <div class="text-right">
+             <p class="text-sm font-medium text-gray-600 dark:text-gray-300">Points Earned</p>
+             <p class="text-lg font-bold text-secondary transition-transform flex items-center justify-end" [class]="kudosPointsUpdated() ? 'animate-text-pop' : ''">
+              {{ user.kudosReceived }}
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg>
+            </p>
+          </div>
+        </div>
+       }
+    </header>
+
+    <!-- Content Area -->
+    <div class="flex-1 p-6 overflow-y-auto">
+      @switch (activeView()) {
+        @case ('dashboard') {
+          <app-dashboard (sendKudos)="openKudosModal($event)"/>
+        }
+        @case ('employees') {
+          <app-employees (sendKudos)="openKudosModal($event)"/>
+        }
+        @case ('projects') {
+          <app-projects />
+        }
+        @case ('rewards') {
+          <app-rewards (redeem)="handleRedeemReward($event)"/>
+        }
+        @case ('profile') {
+          <app-profile />
+        }
+      }
+    </div>
+  </main>
+</div>
+
+<!-- Kudos Modal -->
+@if (kudosTargetEmployee(); as target) {
+  <app-kudos-modal 
+    [targetEmployee]="target" 
+    [currentUser]="currentUser()" 
+    (close)="closeKudosModal()"
+    (send)="handleSendKudos($event)"/>
+}
+
+<!-- Confetti Animation -->
+@if (showConfetti()) {
+  <app-confetti />
+}
+
+<!-- Notifications -->
+<app-notification [notifications]="notifications()"/>
