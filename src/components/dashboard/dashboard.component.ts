@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, output, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data.service';
 import { Employee } from '../../models';
@@ -16,6 +16,9 @@ export class DashboardComponent {
   leaderboard = this.dataService.getKudosLeaderboard;
   projects = this.dataService.projects;
   sendKudos = output<Employee>();
+
+  topThreeLeaderboard = computed(() => this.leaderboard().slice(0, 3));
+  otherLeaders = computed(() => this.leaderboard().slice(3));
 
   onSendKudos(employee: Employee) {
     this.sendKudos.emit(employee);

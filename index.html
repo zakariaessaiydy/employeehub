@@ -6,6 +6,7 @@
   <base href="/" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -13,24 +14,36 @@
       theme: {
         extend: {
           colors: {
-            'primary': '#6366F1', // Indigo 500
-            'primary-focus': '#4F46E5', // Indigo 600
-            'secondary': '#EC4899', // Pink 500
-            'accent': '#F59E0B', // Amber 500
-            'neutral': '#1F2937', // Gray 800
-            'base-100': '#111827', // Gray 900
-            'base-200': '#1F2937', // Gray 800
-            'base-300': '#374151', // Gray 700
-            'info': '#3B82F6',
+            'background': '#F7F7F7', // Off-white/light gray background
+            'foreground': '#111111', // Near-black for text
+            'primary': '#EC4899', // Gumroad-like pink
+            'primary-focus': '#DB2777',
+            'border': '#E5E7EB', // Subtle border color
+            'muted': '#6B7280', // For secondary text
             'success': '#10B981',
-            'warning': '#FBBF24',
             'error': '#EF4444',
+            'info': '#3B82F6',
+            'accent': '#F59E0B',
+            // Base colors for dark mode compatibility
+            'base-100': '#111827',
+            'base-200': '#1F2937',
+            'base-300': '#374151',
+          },
+          fontFamily: {
+            sans: ['"Inter"', 'sans-serif'],
+          },
+          borderRadius: {
+            'lg': '0.5rem',
+            'xl': '0.75rem',
+            '2xl': '1rem',
+          },
+          boxShadow: {
+            'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+            'soft-lg': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03)',
           },
            animation: {
-            'fade-in': 'fadeIn 0.5s ease-out',
-            'slide-in-up': 'slideInUp 0.5s ease-out',
-            'kudo-send': 'kudoSend 1s ease-out forwards',
-            'text-pop': 'textPop 0.5s ease-in-out',
+            'fade-in': 'fadeIn 0.2s ease-out',
+            'slide-in-up': 'slideInUp 0.2s ease-out',
           },
           keyframes: {
             fadeIn: {
@@ -38,18 +51,9 @@
               '100%': { opacity: 1 },
             },
             slideInUp: {
-              '0%': { transform: 'translateY(20px)', opacity: 0 },
+              '0%': { transform: 'translateY(10px)', opacity: 0 },
               '100%': { transform: 'translateY(0)', opacity: 1 },
             },
-            kudoSend: {
-                '0%': { transform: 'scale(1) rotate(0deg)', opacity: 1 },
-                '50%': { transform: 'scale(1.5) rotate(-15deg)', opacity: 0.8 },
-                '100%': { transform: 'scale(0) rotate(0deg)', opacity: 0 }
-            },
-            textPop: {
-              '0%, 100%': { transform: 'scale(1)' },
-              '50%': { transform: 'scale(1.25)' },
-            }
           }
         }
       }
@@ -74,7 +78,7 @@
 }
 </script>
 </head>
-<body class="antialiased">
+<body class="bg-background dark:bg-zinc-900 text-foreground dark:text-gray-200 antialiased">
   <app-root></app-root>
 </body>
 </html>

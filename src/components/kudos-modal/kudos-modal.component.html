@@ -1,45 +1,36 @@
-<div class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 flex items-center justify-center z-50 animate-fade-in" (click)="onClose()">
-  <div class="bg-white dark:bg-base-200 rounded-lg shadow-2xl p-8 w-full max-w-md m-4 relative animate-slide-in-up" (click)="$event.stopPropagation()">
-    <!-- Close button -->
-    <button (click)="onClose()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-800 dark:hover:text-white transition-colors">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-    
+<div class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50 animate-fade-in" (click)="onClose()">
+  <div class="bg-white dark:bg-zinc-800 rounded-2xl shadow-soft-lg p-8 w-full max-w-md m-4 relative animate-slide-in-up" (click)="$event.stopPropagation()">
     <div class="text-center">
-      <img [src]="targetEmployee().avatarUrl" alt="{{ targetEmployee().name }}" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-primary">
-      <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Send Kudos to</h3>
+      <img [src]="targetEmployee().avatarUrl" alt="{{ targetEmployee().name }}" class="w-24 h-24 rounded-full mx-auto mb-4 ring-4 ring-offset-4 ring-offset-white dark:ring-offset-zinc-800 ring-primary">
+      <h3 class="text-2xl font-bold text-foreground dark:text-white">Send Kudos to</h3>
       <p class="text-xl text-primary">{{ targetEmployee().name }}</p>
     </div>
 
-    <div class="mt-6 space-y-4">
+    <div class="mt-6 space-y-6">
       <div>
-        <label for="kudosAmount" class="block text-sm font-medium text-gray-600 dark:text-gray-300">
-          Amount (Your balance: {{currentUser().kudosBalance}} 
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block text-accent" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm6 6a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1H9a1 1 0 110-2h1v-1a1 1 0 011-1zM5 12a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM15 2a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0V6h-1a1 1 0 110-2h1V3a1 1 0 011-1zM15 8a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" clip-rule="evenodd" /></svg>
-          )
-        </label>
+        <div class="flex justify-between items-baseline">
+            <label for="kudosAmount" class="block text-sm font-medium text-muted">Amount</label>
+            <span class="text-xs text-muted">Balance: {{currentUser().kudosBalance}}</span>
+        </div>
         <input 
           type="range" 
           id="kudosAmount"
           min="1" 
           [max]="currentUser().kudosBalance"
-          class="w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer accent-primary"
+          class="w-full h-2 bg-gray-200 dark:bg-zinc-700 rounded-lg appearance-none cursor-pointer accent-primary mt-2"
           [ngModel]="kudosAmount()"
           (ngModelChange)="kudosAmount.set($event)">
-        <div class="text-center text-2xl font-bold text-accent mt-2 flex items-center justify-center">
+        <div class="text-center text-3xl font-bold text-primary mt-2">
           {{ kudosAmount() }} 
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm6 6a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1H9a1 1 0 110-2h1v-1a1 1 0 011-1zM5 12a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM15 2a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0V6h-1a1 1 0 110-2h1V3a1 1 0 011-1zM15 8a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" clip-rule="evenodd" /></svg>
         </div>
       </div>
       <div>
-        <label for="kudosMessage" class="block text-sm font-medium text-gray-600 dark:text-gray-300">Message (Optional)</label>
+        <label for="kudosMessage" class="block text-sm font-medium text-muted">Message (Optional)</label>
         <textarea 
           id="kudosMessage"
           rows="3" 
-          placeholder="Great job on the presentation!"
-          class="w-full mt-1 bg-gray-100 dark:bg-base-300 border-2 border-gray-300 dark:border-gray-600 rounded-md p-2 text-gray-900 dark:text-white focus:outline-none focus:border-primary"
+          placeholder="Great job on..."
+          class="w-full mt-2 bg-background dark:bg-zinc-700 border border-border dark:border-zinc-600 rounded-lg p-3 text-foreground dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
           [ngModel]="kudosMessage()"
           (ngModelChange)="kudosMessage.set($event)"></textarea>
       </div>
@@ -48,11 +39,9 @@
     <div class="mt-8">
       <button (click)="onSendKudos()" 
               [disabled]="kudosAmount() <= 0 || currentUser().kudosBalance < kudosAmount() || isSending()"
-              class="w-full bg-primary text-white py-3 rounded-lg font-bold text-lg hover:bg-primary-focus transition-colors disabled:bg-gray-400 dark:disabled:bg-gray-600 disabled:cursor-not-allowed flex items-center justify-center">
+              class="w-full bg-primary text-white py-3 rounded-lg font-bold text-lg hover:bg-primary-focus transition-colors disabled:bg-primary/50 disabled:cursor-not-allowed">
         @if (isSending()) {
-          <div class="animate-kudo-send">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm6 6a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1H9a1 1 0 110-2h1v-1a1 1 0 011-1zM5 12a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM15 2a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0V6h-1a1 1 0 110-2h1V3a1 1 0 011-1zM15 8a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" clip-rule="evenodd" /></svg>
-          </div>
+          <span>Sending...</span>
         } @else {
           <span>Send Kudos</span>
         }

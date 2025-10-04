@@ -1,4 +1,3 @@
-
 import { Component, ChangeDetectionStrategy, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -22,16 +21,15 @@ export class KudosModalComponent {
   isSending = signal(false);
 
   onSendKudos() {
-    if (this.kudosAmount() > 0 && this.currentUser().kudosBalance >= this.kudosAmount()) {
+    if (this.kudosAmount() > 0 && this.currentUser().kudosBalance >= this.kudosAmount() && !this.isSending()) {
         this.isSending.set(true);
-        setTimeout(() => {
-            this.send.emit({
-                to: this.targetEmployee(),
-                amount: this.kudosAmount(),
-                message: this.kudosMessage()
-            });
-            this.isSending.set(false);
-        }, 1000); // simulate animation
+        // Don't need a timeout, the parent component closing the modal handles the state change
+        this.send.emit({
+            to: this.targetEmployee(),
+            amount: this.kudosAmount(),
+            message: this.kudosMessage()
+        });
+        // No need to set isSending back to false, as the modal will be destroyed.
     }
   }
 
