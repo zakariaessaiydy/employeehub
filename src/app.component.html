@@ -3,9 +3,10 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Navigation -->
     <header class="flex justify-between items-center py-5 border-b border-border dark:border-zinc-800">
-      <div class="flex items-center space-x-4">
-        <h1 class="text-2xl font-bold text-foreground dark:text-white">EmployeeHub</h1>
-      </div>
+      <button (click)="changeView('dashboard')" class="flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background dark:focus:ring-offset-zinc-900 rounded-lg p-1 -m-1">
+        <img src="assets/images/logo.svg" alt="EmployeeHub Logo" width="28" height="28" />
+        <span class="text-2xl font-bold text-foreground dark:text-white">EmployeeHub</span>
+      </button>
       <nav class="hidden md:flex items-center space-x-2">
         @for (view of ['dashboard', 'employees', 'projects', 'rewards']; track view) {
           <button (click)="changeView(view)" 
